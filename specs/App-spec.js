@@ -1,4 +1,4 @@
-var App = require('./../app/App.js');
+var App = require('./../app/App.jsx');
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 
@@ -10,4 +10,3 @@ describe("App", function() {
   });
 
 });
-

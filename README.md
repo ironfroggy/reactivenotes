@@ -1,6 +1,8 @@
-## React App Boilerplate
+## React App ES6 Boilerplate
 
 Start developing React JS applications easily with the included tooling. Using gulp with browserify and jasmine for testing.
+
+Based on [React App Boilerplate](https://github.com/christianalfoni/react-app-boilerplate)
 
 Read more about how it works at: [React JS workflow, part 2](http://christianalfoni.github.io/javascript/2014/10/30/react-js-workflow-part2.html)
 
