@@ -4,11 +4,11 @@
 var React = require('react');
 
 var App = React.createClass({
-	displayName: 'App',
+  displayName: 'App',
 
-	render: function render() {
-		return React.createElement('h1', null, 'Goodbye world!');
-	}
+  render: function render() {
+    return React.createElement('h1', null, 'Goodbye world!');
+  }
 
 });
 

@@ -20,24 +20,24 @@ var connect = require('gulp-connect');
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
 var dependencies = [
-	'react',
+  'react',
   'react/addons'
 ];
 
 var browserifyTask = function (options) {
 
   // Our app bundler
-	var appBundler = browserify({
-		entries: [options.src], // Only need initial file, browserify finds the rest
-   	transform: [babelify], // We want to convert JSX to normal javascript
-		debug: options.development, // Gives us sourcemapping
-		cache: {}, packageCache: {}, fullPaths: options.development // Requirement of watchify
-	});
+  var appBundler = browserify({
+    entries: [options.src], // Only need initial file, browserify finds the rest
+     transform: [babelify], // We want to convert JSX to normal javascript
+    debug: options.development, // Gives us sourcemapping
+    cache: {}, packageCache: {}, fullPaths: options.development // Requirement of watchify
+  });
 
-	// We set our dependencies as externals on our app bundler when developing
-	(options.development ? dependencies : []).forEach(function (dep) {
-		appBundler.external(dep);
-	});
+  // We set our dependencies as externals on our app bundler when developing
+  (options.development ? dependencies : []).forEach(function (dep) {
+    appBundler.external(dep);
+  });
 
   // The rebundle process
   var rebundle = function () {
@@ -69,30 +69,30 @@ var browserifyTask = function (options) {
   // in the application bundle
   if (options.development) {
 
-  	var testFiles = glob.sync('./specs/**/*-spec.js');
-		var testBundler = browserify({
-			entries: testFiles,
-			debug: true, // Gives us sourcemapping
-			transform: [babelify],
-			cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
-		});
+    var testFiles = glob.sync('./specs/**/*-spec.js');
+    var testBundler = browserify({
+      entries: testFiles,
+      debug: true, // Gives us sourcemapping
+      transform: [babelify],
+      cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
+    });
 
-		dependencies.forEach(function (dep) {
-			testBundler.external(dep);
-		});
+    dependencies.forEach(function (dep) {
+      testBundler.external(dep);
+    });
 
-  	var rebundleTests = function () {
-  		var start = Date.now();
-  		console.log('Building TEST bundle');
-  		testBundler.bundle()
+    var rebundleTests = function () {
+      var start = Date.now();
+      console.log('Building TEST bundle');
+      testBundler.bundle()
       .on('error', gutil.log)
-	      .pipe(source('specs.js'))
-	      .pipe(gulp.dest(options.dest))
-	      .pipe(livereload())
-	      .pipe(notify(function () {
-	        console.log('TEST bundle built in ' + (Date.now() - start) + 'ms');
-	      }));
-  	};
+        .pipe(source('specs.js'))
+        .pipe(gulp.dest(options.dest))
+        .pipe(livereload())
+        .pipe(notify(function () {
+          console.log('TEST bundle built in ' + (Date.now() - start) + 'ms');
+        }));
+    };
 
     testBundler = watchify(testBundler);
     testBundler.on('update', rebundleTests);
