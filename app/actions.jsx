@@ -3,9 +3,23 @@ import Dispatcher from './dispatcher.jsx';
 
 class Actions {
     newEntry(text) {
+        if (text) {
+            Dispatcher.dispatch({
+                action: "new_entry",
+                text: text,
+            })
+        }
+    }
+    moveUp() {
         Dispatcher.dispatch({
-            action: "new_entry",
-            text: text,
+            action: "move",
+            direction: -1,
+        })
+    }
+    moveDown() {
+        Dispatcher.dispatch({
+            action: "move",
+            direction: 1,
         })
     }
     enableEditMode(note) {
@@ -22,14 +36,21 @@ class Actions {
     }
     changeNoteText(note, text) {
         Dispatcher.dispatch({
-            action: "change_note_text",
-            note: note.props.i,
-            text: text,
-        })
-        Dispatcher.dispatch({
             action: "edit_mode",
             note: -1,
         })
+        if (text) {
+            Dispatcher.dispatch({
+                action: "change_note_text",
+                note: note.props.i,
+                text: text,
+            })
+        } else {
+            Dispatcher.dispatch({
+                action: "delete_note",
+                note: note.props.i,
+            })
+        }
     }
 }
 

@@ -12,7 +12,7 @@ class App extends AutoComponent {
     NoteStore.addListener('change', this.onChange)
     Dispatcher.register(this.onAction)
     this.state = {
-      editNode: -1
+      editNote: -1
     }
   }
 
@@ -38,6 +38,22 @@ class App extends AutoComponent {
     switch (payload.action) {
       case "edit_mode":
         this.setState({editNote: payload.note})
+        break
+      case "move":
+        var i = this.state.editNote
+        if (i < 0) {
+          i = NoteStore._notes.length
+        }
+        i += payload.direction
+        if (i < 0) {
+          i = 0
+        }
+        if (i >= NoteStore._notes.length) {
+          i = NoteStore._notes.length - 1
+          this.setState({editNote: -1})
+        } else {
+          this.setState({editNote: i})
+        }
         break
     }
   }

@@ -68,9 +68,17 @@ export class NoteEntry extends AutoComponent {
     this.setState({text: ev.target.value})
   }
   onKeyUp(ev) {
-    if (ev.keyCode === 13) {
-      this.setState({text: ""})
-      this.onEnter(ev.target.value)
+    switch (ev.keyCode) {
+      case 13:
+        this.setState({text: ""})
+        this.onEnter(ev.target.value)
+        break
+      case 38:
+        Actions.moveUp()
+        break
+      case 40:
+        Actions.moveDown()
+        break
     }
   }
   onEnter(text) {
