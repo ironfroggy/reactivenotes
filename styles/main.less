@@ -1,8 +1,8 @@
 body {
   background-color: #fcfcfc;
 }
-input,
-.note {
+
+input, .note {
   border-width: 1px;
   border-style: solid;
   border-color: #aaa;
@@ -11,19 +11,26 @@ input,
   font-weight: 100;
   font-family: sans-serif;
 }
+
 .note-edit {
   padding: 0;
   border: 0;
 }
+
 .note-list {
   box-shadow: 0 0 5px #aaa;
 }
-.note:not(:last-child) {
-  border-bottom: none;
+
+.note {
+  &:not(:last-child) {
+    border-bottom: none;
+
+    input {
+      border-bottom: none;
+    }
+  }
 }
-.note:not(:last-child) input {
-  border-bottom: none;
-}
+
 input {
   width: 100%;
   background: white;

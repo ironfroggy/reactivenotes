@@ -23,7 +23,7 @@ class App extends AutoComponent {
     )
     var focusEntry = editNote === -1
     return (
-      <div className="notelist">
+      <div className="note-list">
         {notes}
         <NoteEntry isFocused={focusEntry} />
       </div>
@@ -42,14 +42,14 @@ class App extends AutoComponent {
       case "move":
         var i = this.state.editNote
         if (i < 0) {
-          i = NoteStore.getNoteCount
+          i = NoteStore.getNoteCount()
         }
         i += payload.direction
         if (i < 0) {
           i = 0
         }
-        if (i >= NoteStore.getNoteCount) {
-          i = NoteStore.getNoteCount - 1
+        if (i >= NoteStore.getNoteCount()) {
+          i = NoteStore.getNoteCount() - 1
           this.setState({editNote: -1})
         } else {
           this.setState({editNote: i})

@@ -12,7 +12,9 @@ var cssmin = require('gulp-cssmin');
 var gutil = require('gulp-util');
 var shell = require('gulp-shell');
 var rename = require("gulp-rename");
+var less = require('gulp-less');
 var glob = require('glob');
+var path = require('path');
 var livereload = require('gulp-livereload');
 var jasminePhantomJs = require('gulp-jasmine2-phantomjs');
 var connect = require('gulp-connect');
@@ -132,7 +134,10 @@ var cssTask = function (options) {
         var start = new Date();
         console.log('Building CSS bundle');
         gulp.src(options.src)
-          .pipe(concat('main.css'))
+          .pipe(gulpif(options.development, livereload()))
+          .pipe(concat('main.less'))
+          .pipe(less())
+          .pipe(rename('main.css'))
           .pipe(gulp.dest(options.dest))
           .pipe(notify(function () {
             console.log('CSS bundle built in ' + (Date.now() - start) + 'ms');
@@ -160,7 +165,7 @@ gulp.task('default', function () {
 
   cssTask({
     development: true,
-    src: './styles/**/*.css',
+    src: './styles/**/*.less',
     dest: './build'
   });
 
@@ -181,7 +186,7 @@ gulp.task('deploy', function () {
 
   cssTask({
     development: false,
-    src: './styles/**/*.css',
+    src: './styles/**/*.less',
     dest: './dist'
   });
 
