@@ -1,6 +1,6 @@
 {
   "name": "react-es6-browserify-gulp-app",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "App Boilerplate (Browserify, ES6, React)",
   "author": "Calvin Spealman",
   "license": "MIT",
@@ -11,6 +11,7 @@
     "babel-preset-react": "^6.1.18",
     "babelify": "^7.2.0",
     "browserify": "^10.2.1",
+    "flux": "^2.1.1",
     "glob": "^4.0.6",
     "gulp": "^3.8.9",
     "gulp-concat": "^2.3.4",
