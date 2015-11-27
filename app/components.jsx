@@ -60,8 +60,14 @@ export class NoteEntry extends AutoComponent {
   }
   render() {
     var text = this.state.text || ""
+    var className = "note-entry"
+    if (typeof this.props.onEnter === "undefined") {
+      className += " new-note-entry"
+    }
     return (
-      <input ref={(el)=>this.input=el} type="text" onKeyUp={this.onKeyUp} onChange={this.onChange} value={text} />
+      <div className={className}>
+        <input ref={(el)=>this.input=el} type="text" onKeyUp={this.onKeyUp} onChange={this.onChange} value={text} />
+      </div>
     )
   }
   onChange(ev) {
