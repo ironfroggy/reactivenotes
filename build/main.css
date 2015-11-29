@@ -1,7 +1,7 @@
 body {
   background-color: #fcfcfc;
 }
-input,
+textarea,
 .note {
   border-width: 1px;
   border-style: solid;
@@ -18,15 +18,18 @@ input,
 .note-list {
   box-shadow: 0 0 5px #aaa;
   position: relative;
+  max-width: 400px;
 }
 .note {
   background-color: lightyellow;
+  min-height: 4ex;
 }
 .note:not(:last-child) {
   border-bottom: none;
 }
-.note:not(:last-child) input {
+.note:not(:last-child) textarea {
   border-bottom: none;
+  min-height: 4ex;
 }
 .new-note-entry::before {
   content: "> ";
@@ -41,20 +44,20 @@ input,
   box-sizing: border-box;
   box-shadow: 0 0 1px #888 inset;
 }
-.new-note-entry input {
+.new-note-entry textarea {
   box-shadow: none;
   border: 0;
   background-color: transparent;
 }
-.new-note-entry input:focus {
+.new-note-entry textarea:focus {
   background-color: transparent;
 }
-input {
+textarea {
   width: 100%;
   background-color: transparent;
   box-sizing: border-box;
   box-shadow: 0 0 1px #888 inset;
 }
-input:focus {
+textarea:focus {
   background-color: white;
 }

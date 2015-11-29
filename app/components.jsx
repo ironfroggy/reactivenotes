@@ -66,8 +66,7 @@ export class NoteEntry extends AutoComponent {
     }
     return (
       <div className={className}>
-        <input ref={(el)=>this.input=el} type="text" onKeyUp={this.onKeyUp} onChange={this.onChange} value={text} />
-      </div>
+        <textarea ref={(el)=>this.input=el} type="text" onKeyUp={this.onKeyUp} onChange={this.onChange}>{text}</textarea></div>
     )
   }
   onChange(ev) {
