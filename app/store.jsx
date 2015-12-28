@@ -1,79 +1,76 @@
 import EventEmitter from 'events';
+import Moment from 'moment';
+
+import PouchDB from 'pouchdb';
 
 import Dispatcher from './dispatcher.jsx';
 
 
-class NoteStore extends EventEmitter {
+class PouchNoteStore extends EventEmitter {
   constructor() {
     super()
-    this._notes = [];
-
     Dispatcher.register(this.onAction.bind(this));
+    this.db = new PouchDB("notes")
+    this.notes = []
+    this._fetchNotes()
   }
-
-  addNote(text) {
-    this._notes.push({text: text})
-  }
-  editNote(i, text) {
-    this._notes[i].text = text
-  }
-  deleteNote(i) {
-    this._notes.splice(i, 1)
-  }
-  getNotes() {
-    return this._notes
-  }
-  getNoteCount() {
-    return this._notes.length
-  }
-
   onAction(payload) {
     switch (payload.action) {
       case "new_entry":
         this.addNote(payload.text)
-        this.emit('change')
         break
       case "change_note_text":
         this.editNote(payload.note, payload.text)
-        this.emit('change')
         break
       case "delete_note":
         this.deleteNote(payload.note)
-        this.emit('change')
         break
     }
   }
-}
-
-class LocalNoteStore extends NoteStore {
-  constructor() {
-    super()
-    var notes = localStorage["notes"]
-    if (!notes) {
-      localStorage["notes"] = JSON.stringify([])
-    }
-  }
   addNote(text) {
-    var notes = JSON.parse(localStorage["notes"])
-    notes.push({text: text})
-    localStorage["notes"] = JSON.stringify(notes)
+    let ts = Moment().format()
+    this.db.put({
+      _id: ts,
+      text: text,
+    }).then((result)=>{
+      console.log('Added note:', text)
+      this._fetchNotes()
+    })
   }
   editNote(i, text) {
-    var notes = JSON.parse(localStorage["notes"])
-    notes[i].text = text
-    localStorage["notes"] = JSON.stringify(notes)
+    let id = this.notes[i]._id;
+    let rev = this.notes[i]._rev;
+    this.db.put({
+      _id: id,
+      _rev: rev,
+      text: text,
+    }).then((result)=>{
+      this._fetchNotes()
+    }).catch((error)=>{
+      console.error(error)
+    })
   }
   deleteNote(i) {
-    var notes = JSON.parse(localStorage["notes"])
-    notes.splice(i, 1)
-    localStorage["notes"] = JSON.stringify(notes)
+    this.db.remove(this.notes[i])
+      .then(()=>{
+        this._fetchNotes()
+      })
+      .catch((error)=>{
+        console.error(`delete error (${this.notes[i]._id}):`, error);
+      })
   }
-  getNotes() {
-    return JSON.parse(localStorage["notes"])
-  }
-  getNoteCount() {
-    return this.getNotes().length
+  _fetchNotes() {
+    return new Promise((resolve, reject)=>{
+      this.db.allDocs({
+        include_docs: true,
+      }).then((results)=>{
+        this.notes = results.rows.map((row)=>row.doc)
+        this.emit('change')
+        resolve(this.notes)
+      }).catch((error)=>console.error)
+    })
   }
 }
 
-export default new LocalNoteStore()
+
+export default new PouchNoteStore()

@@ -18,7 +18,7 @@ class App extends AutoComponent {
 
   render() {
     var editNote = this.state.editNote
-    var notes = NoteStore.getNotes().map(
+    var notes = NoteStore.notes.map(
       (note, i) => <Note key={i} i={i} text={note.text} editMode={editNote===i} />
     )
     var focusEntry = editNote === -1
@@ -42,14 +42,14 @@ class App extends AutoComponent {
       case "move":
         var i = this.state.editNote
         if (i < 0) {
-          i = NoteStore.getNoteCount()
+          i = NoteStore.notes.length
         }
         i += payload.direction
         if (i < 0) {
           i = 0
         }
-        if (i >= NoteStore.getNoteCount()) {
-          i = NoteStore.getNoteCount() - 1
+        if (i >= NoteStore.notes.length) {
+          i = NoteStore.notes.length - 1
           this.setState({editNote: -1})
         } else {
           this.setState({editNote: i})

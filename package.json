@@ -27,7 +27,9 @@
     "gulp-streamify": "0.0.5",
     "gulp-uglify": "^0.3.1",
     "gulp-util": "^3.0.0",
+    "moment": "^2.10.6",
     "phantomjs": "^1.9.12",
+    "pouchdb": "^5.1.0",
     "reactify": "^0.15.2",
     "vinyl-source-stream": "^0.1.1",
     "watchify": "^2.1.1"
