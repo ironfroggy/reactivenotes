@@ -35,6 +35,7 @@ class Actions {
         })
     }
     changeNoteText(note, text) {
+        var text = text.trim()
         Dispatcher.dispatch({
             action: "edit_mode",
             note: -1,

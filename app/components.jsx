@@ -66,7 +66,7 @@ export class NoteEntry extends AutoComponent {
     }
     return (
       <div className={className}>
-        <textarea ref={(el)=>this.input=el} type="text" onKeyUp={this.onKeyUp} onChange={this.onChange}>{text}</textarea></div>
+        <textarea ref={(el)=>this.input=el} type="text" onKeyUp={this.onKeyUp} onChange={this.onChange} value={text}></textarea></div>
     )
   }
   onChange(ev) {
@@ -75,7 +75,6 @@ export class NoteEntry extends AutoComponent {
   onKeyUp(ev) {
     switch (ev.keyCode) {
       case 13:
-        this.setState({text: ""})
         this.onEnter(ev.target.value)
         break
       case 38:
@@ -89,6 +88,7 @@ export class NoteEntry extends AutoComponent {
   onEnter(text) {
     if (typeof this.props.onEnter === "undefined") {
       Actions.newEntry(text)
+      this.setState({text: ""})
     } else {
       this.props.onEnter(text)
     }
