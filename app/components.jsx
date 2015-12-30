@@ -81,6 +81,7 @@ export class NoteEntry extends AutoComponent {
     }
   }
   onKeyUp(ev) {
+    let shift = ev.shiftKey
     switch (ev.keyCode) {
       case 13:
         if (ev.target.value.trim() === "") {
@@ -88,10 +89,18 @@ export class NoteEntry extends AutoComponent {
         }
         break
       case 38:
-        Actions.moveUp()
+        if (shift) {
+          Actions.movePage(1)
+        } else {
+          Actions.moveUp()
+        }
         break
       case 40:
-        Actions.moveDown()
+        if (shift) {
+          Actions.movePage(-1)
+        } else {
+          Actions.moveDown()
+        }
         break
     }
   }

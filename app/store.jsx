@@ -12,6 +12,7 @@ class PouchNoteStore extends EventEmitter {
     Dispatcher.register(this.onAction.bind(this));
     this.notes = []
     this.tag = null
+    this.page = 1
     this._setupDB()
     this._fetchNotes()
 
@@ -58,6 +59,8 @@ class PouchNoteStore extends EventEmitter {
       case "delete_note":
         this.deleteNote(payload.note)
         break
+      case "move_page":
+        this.movePage(payload.n)
     }
   }
   _prepareNote(note) {
@@ -72,6 +75,10 @@ class PouchNoteStore extends EventEmitter {
       [tag, index, input] = result
       note.tags.push(tag)
     }
+  }
+  movePage(n=1) {
+    this.page += n
+    this._fetchNotes()
   }
   addNote(text) {
     let ts = Moment().format()
@@ -106,10 +113,14 @@ class PouchNoteStore extends EventEmitter {
   _fetchNotes() {
     return new Promise((resolve, reject)=>{
       let q
+      let limit = 5
       let opt = {
         include_docs: true,
-        startkey: "0000-12-28T09:15:42-05:00",
-        endkey: "9999-12-28T09:15:42-05:00",
+        endkey: "0000-12-28T09:15:42-05:00",
+        startkey: "9999-12-28T09:15:42-05:00",
+        limit: limit,
+        skip: (this.page - 1) * limit,
+        descending: true,
       }
       if (this.tag === null) {
         q = this.db.allDocs(opt)
@@ -118,7 +129,7 @@ class PouchNoteStore extends EventEmitter {
         q = this.db.query("indexes/by_tag", opt)
       }
       q.then((results)=>{
-        this.notes = results.rows.map((row)=>row.doc)
+        this.notes = results.rows.map((row)=>row.doc).reverse()
         this.emit('change')
         resolve(this.notes)
       }).catch((error)=>console.error)

@@ -60,6 +60,13 @@ class Actions {
             })
         }
     }
+    movePage(n) {
+        this.disableEditMode()
+        Dispatcher.dispatch({
+            action: "move_page",
+            n: n,
+        })
+    }
 }
 
 export default new Actions()

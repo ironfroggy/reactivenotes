@@ -29,6 +29,9 @@ class App extends AutoComponent {
         <div className="note-list">
           {notes}
         </div>
+        <div className="note-page">
+          Page {NoteStore.page}, Shift Up and Down to change pages
+        </div>
         <NoteEntry isFocused={focusEntry} />
       </div>
     )
