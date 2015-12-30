@@ -2,6 +2,12 @@ import Dispatcher from './dispatcher.jsx';
 
 
 class Actions {
+    setFilter(tag) {
+        Dispatcher.dispatch({
+            action: "set_filter",
+            tag: tag || null,
+        })
+    }
     newEntry(text) {
         if (text) {
             Dispatcher.dispatch({
@@ -35,6 +41,7 @@ class Actions {
         })
     }
     changeNoteText(note, text) {
+        var origtext = text
         var text = text.trim()
         Dispatcher.dispatch({
             action: "edit_mode",

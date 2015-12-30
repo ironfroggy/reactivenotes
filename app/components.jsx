@@ -10,18 +10,19 @@ export class Note extends AutoComponent {
     super(props)
   }
   render() {
+    let tags = []
+    for (let tag of this.props.tags) {
+      tags.push(<span key={this.props.key+"_tag_"+tag} className="tag">{tag}</span>)
+    }
     if (this.props.editMode) {
       return (
-        <div className="note note-edit"><NoteEntry text={this.props.text} onEnter={this.onEnter} /></div>
+        <div className="note note-edit"><NoteEntry text={this.props.text} onEnter={this.onEnter} />{tags}</div>
       )
     } else {
       return (
-        <div className="note" onClick={this.onClick}>{this.props.text}</div>
+        <div className="note" onClick={this.onClick}>{this.props.text}{tags}</div>
       )
     }
-    return (
-      <div className="note" onClick={this.onClick}>{this.props.text}{edit}</div>
-    )
   }
   onClick(ev) {
     Actions.enableEditMode(this)
@@ -66,16 +67,25 @@ export class NoteEntry extends AutoComponent {
     }
     return (
       <div className={className}>
-        <textarea ref={(el)=>this.input=el} type="text" onKeyUp={this.onKeyUp} onChange={this.onChange} value={text}></textarea></div>
+        <textarea ref={(el)=>this.input=el} type="text" onKeyUp={this.onKeyUp} onKeyDown={this.onKeyDown} onChange={this.onChange} value={text}></textarea></div>
     )
   }
   onChange(ev) {
     this.setState({text: ev.target.value})
   }
-  onKeyUp(ev) {
+  onKeyDown(ev) {
     switch (ev.keyCode) {
       case 13:
         this.onEnter(ev.target.value)
+        break
+    }
+  }
+  onKeyUp(ev) {
+    switch (ev.keyCode) {
+      case 13:
+        if (ev.target.value.trim() === "") {
+          this.onEnter("")
+        }
         break
       case 38:
         Actions.moveUp()
@@ -86,8 +96,13 @@ export class NoteEntry extends AutoComponent {
     }
   }
   onEnter(text) {
+    text = text.trim()
     if (typeof this.props.onEnter === "undefined") {
-      Actions.newEntry(text)
+      if (text.match(/^#\w+$/) !== null || text === "") {
+        Actions.setFilter(text)
+      } else {
+        Actions.newEntry(text)
+      }
       this.setState({text: ""})
     } else {
       this.props.onEnter(text)

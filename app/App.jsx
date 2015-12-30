@@ -19,12 +19,16 @@ class App extends AutoComponent {
   render() {
     var editNote = this.state.editNote
     var notes = NoteStore.notes.map(
-      (note, i) => <Note key={i} i={i} text={note.text} editMode={editNote===i} />
+      (note, i) => <Note key={i} i={i} text={note.text} tags={note.tags || []} editMode={editNote===i} />
     )
     var focusEntry = editNote === -1
+    var filter = NoteStore.tag ? `Filtering by ${NoteStore.tag}` : "All notes. Enter a #hashtag to filter."
     return (
-      <div className="note-list">
-        {notes}
+      <div className="note-app">
+        <div className="note-filter">{filter}</div>
+        <div className="note-list">
+          {notes}
+        </div>
         <NoteEntry isFocused={focusEntry} />
       </div>
     )

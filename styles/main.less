@@ -15,6 +15,10 @@ textarea, .note {
 .note-edit {
   padding: 0;
   border: 0;
+
+  .tag {
+    display: none;
+  }
 }
 
 .note-list {
@@ -23,9 +27,21 @@ textarea, .note {
   max-width: 400px;
 }
 
+.note-filter {
+  padding: 10px;
+  color: green;
+  font-style: italic;
+}
+
 .note {
   background-color: lightyellow;
   min-height: 4ex;
+
+  .tag {
+    color: grey;
+    float: right;
+    font-size: smaller;
+  }
 
   &:not(:last-child) {
     border-bottom: none;
@@ -46,6 +62,9 @@ textarea, .note {
 .new-note-entry {
   display: flex;
   flex-flow: row nowrap;
+
+  max-width: 400px;
+  margin-top: 20px;
 
   background-color: transparent;
   box-sizing: border-box;

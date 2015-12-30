@@ -15,14 +15,27 @@ textarea,
   padding: 0;
   border: 0;
 }
+.note-edit .tag {
+  display: none;
+}
 .note-list {
   box-shadow: 0 0 5px #aaa;
   position: relative;
   max-width: 400px;
 }
+.note-filter {
+  padding: 10px;
+  color: green;
+  font-style: italic;
+}
 .note {
   background-color: lightyellow;
   min-height: 4ex;
+}
+.note .tag {
+  color: grey;
+  float: right;
+  font-size: smaller;
 }
 .note:not(:last-child) {
   border-bottom: none;
@@ -40,6 +53,8 @@ textarea,
 .new-note-entry {
   display: flex;
   flex-flow: row nowrap;
+  max-width: 400px;
+  margin-top: 20px;
   background-color: transparent;
   box-sizing: border-box;
   box-shadow: 0 0 1px #888 inset;
