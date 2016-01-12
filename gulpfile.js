@@ -8,16 +8,15 @@ var uglify = require('gulp-uglify');
 var streamify = require('gulp-streamify');
 var notify = require('gulp-notify');
 var concat = require('gulp-concat');
-var cssmin = require('gulp-cssmin');
+var cssnano = require('gulp-cssnano');
 var gutil = require('gulp-util');
-var shell = require('gulp-shell');
 var rename = require("gulp-rename");
 var less = require('gulp-less');
 var glob = require('glob');
 var path = require('path');
 var livereload = require('gulp-livereload');
 var jasminePhantomJs = require('gulp-jasmine2-phantomjs');
-var connect = require('gulp-connect');
+var webserver = require('gulp-webserver');
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -149,7 +148,7 @@ var cssTask = function (options) {
       gulp.src(options.src)
         .pipe(concat('main.less'))
         .pipe(less())
-        .pipe(cssmin())
+        .pipe(cssnano())
         .pipe(rename('main.css'))
         .pipe(gulp.dest(options.dest));
     }
@@ -157,8 +156,6 @@ var cssTask = function (options) {
 
 // Starts our development workflow
 gulp.task('default', function () {
-  livereload.listen();
-
   browserifyTask({
     development: true,
     src: './app/main.jsx',
@@ -171,10 +168,13 @@ gulp.task('default', function () {
     dest: './build'
   });
 
-  connect.server({
-        root: 'build/',
-        port: 8889
-    });
+  gulp.src('./build/')
+    .pipe(webserver({
+      port: 8889,
+      livereload: true,
+      fallback: 'index.html'
+    })
+  );
 
 });
 
