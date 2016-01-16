@@ -1,7 +1,7 @@
 {
-  "name": "react-es6-browserify-gulp-app",
-  "version": "1.0.0",
-  "description": "App Boilerplate (Browserify, ES6, React)",
+  "name": "reactivenotes",
+  "version": "0.1.1",
+  "description": "Note taking app",
   "author": "Calvin Spealman",
   "license": "MIT",
   "devDependencies": {
@@ -18,7 +18,6 @@
     "gulp-concat": "^2.3.4",
     "gulp-cssnano": "^2.1.0",
     "gulp-if": "^1.2.4",
-    "gulp-jasmine2-phantomjs": "^0.1.1",
     "gulp-less": "^3.0.5",
     "gulp-livereload": "^3.8.1",
     "gulp-notify": "^2.2.0",

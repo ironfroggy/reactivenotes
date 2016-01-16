@@ -15,7 +15,6 @@ var less = require('gulp-less');
 var glob = require('glob');
 var path = require('path');
 var livereload = require('gulp-livereload');
-var jasminePhantomJs = require('gulp-jasmine2-phantomjs');
 var webserver = require('gulp-webserver');
 
 // External dependencies you do not want to rebundle while developing,
@@ -195,5 +194,5 @@ gulp.task('deploy', function () {
 });
 
 gulp.task('test', function () {
-    return gulp.src('./build/testrunner-phantomjs.html').pipe(jasminePhantomJs());
+  // :-/
 });
