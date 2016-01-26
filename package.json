@@ -28,7 +28,7 @@
     "gulp-webserver": "^0.9.1",
     "moment": "^2.10.6",
     "ms": "^0.7.1",
-    "phantomjs": "^1.9.12",
+    "phantomjs": "^2.1.2",
     "pouchdb": "^5.1.0",
     "reactify": "^0.15.2",
     "vinyl-source-stream": "^0.1.1",
