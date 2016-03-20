@@ -5,3 +5,5 @@ build/vendors.js
 TEST-App.xml
 npm-debug.log
 build/*
+main.js
+main.css
