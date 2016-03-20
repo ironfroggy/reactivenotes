@@ -6,6 +6,9 @@ body {
   height: 100vh;
   margin: 0;
 
+  font-weight: 100;
+  font-family: sans-serif;
+
   main {
     height: 100%;
   }
@@ -17,6 +20,10 @@ body {
   padding: 10px;
   box-sizing: padding-box;
   align-items: center;
+
+  h1 {
+    margin: 0;
+  }
 
   .note-placeholder {
     opacity: 0.5;
@@ -31,7 +38,7 @@ body {
     flex-shrink: 1;
   }
 
-  .note-entry {
+  .new-note-entry {
     flex-basis: 16.666%;
     flex-shrink: 1;
   }
@@ -43,17 +50,6 @@ textarea, .note {
   border-color: #aaa;
   padding: 4px;
   font-size: 20px;
-  font-weight: 100;
-  font-family: sans-serif;
-}
-
-.note-edit {
-  padding: 0;
-  border: 0;
-
-  .tag {
-    display: none;
-  }
 }
 
 .note-list {
@@ -63,6 +59,23 @@ textarea, .note {
   flex-grow: 1;
 
   .flowDown();
+
+  .note-entry {
+    height: 100%;
+
+    textarea {
+      height: 100%;
+      padding: 0;
+      border: 0;
+      margin: 0;
+    }
+  }
+
+  .note-edit {
+    .tag {
+      display: none;
+    }
+  }
 }
 
 .note-filter {
@@ -140,6 +153,8 @@ textarea {
   background-color: transparent;
   box-sizing: border-box;
   box-shadow: 0 0 1px #888 inset;
+  font-family: sans-serif;
+  font-weight: 100;
 
   &:focus {
     background-color: white;

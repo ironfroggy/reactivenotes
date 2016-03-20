@@ -16,6 +16,7 @@ var glob = require('glob');
 var path = require('path');
 var livereload = require('gulp-livereload');
 var webserver = require('gulp-webserver');
+var rsync = require('gulp-rsync');
 
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
@@ -190,6 +191,14 @@ gulp.task('deploy', function () {
     src: './styles/**/*.less',
     dest: './dist'
   });
+
+  gulp.src('dist/**')
+    .pipe(rsync({
+      root: 'dist',
+      hostname: 'ash-alpha.ironfroggy.com',
+      destination: '/var/www/reactivenotes.ironfroggy.com/',
+      recursive: true,
+    }));
 
 });
 

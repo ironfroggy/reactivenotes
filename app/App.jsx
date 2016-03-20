@@ -28,6 +28,7 @@ class App extends AutoComponent {
     var filter = NoteStore.tag ? `Filtering by ${NoteStore.tag}` : "All notes. Enter a #hashtag to filter."
     return (
       <div className="note-app">
+        <h1>ReactiveNotes</h1>
         <div className="note-filter">{filter}</div>
         <div className="note-list">
           {notes}
