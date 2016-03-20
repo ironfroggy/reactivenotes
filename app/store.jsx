@@ -122,6 +122,8 @@ class PouchNoteStore extends EventEmitter {
         skip: (this.page - 1) * limit,
         descending: true,
       }
+      console.log('fetch', this.tag)
+      console.trace()
       if (this.tag === null) {
         q = this.db.allDocs(opt)
       } else {

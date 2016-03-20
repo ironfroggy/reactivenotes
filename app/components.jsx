@@ -76,7 +76,6 @@ export class NoteEntry extends AutoComponent {
   onKeyDown(ev) {
     switch (ev.keyCode) {
       case 13:
-        this.onEnter(ev.target.value)
         break
     }
   }
@@ -84,9 +83,7 @@ export class NoteEntry extends AutoComponent {
     let shift = ev.shiftKey
     switch (ev.keyCode) {
       case 13:
-        if (ev.target.value.trim() === "") {
-          this.onEnter("")
-        }
+        this.onEnter(ev.target.value)
         break
       case 38:
         if (shift) {
