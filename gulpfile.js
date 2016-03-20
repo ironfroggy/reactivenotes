@@ -44,7 +44,7 @@ var browserifyTask = function (options) {
   var rebundle = function () {
     var start = Date.now();
     console.log('Building APP bundle');
-    appBundler.bundle()
+    return appBundler.bundle()
       .on('error', gutil.log)
       .pipe(source('main.jsx'))
       .pipe(gulpif(!options.development, streamify(uglify())))
@@ -62,7 +62,7 @@ var browserifyTask = function (options) {
     appBundler.on('update', rebundle);
   }
 
-  rebundle();
+  var bundlePromise = rebundle();
 
   // We create a separate bundle for our dependencies as they
   // should not rebundle on file changes. This only happens when
@@ -124,6 +124,8 @@ var browserifyTask = function (options) {
 
   }
 
+  return bundlePromise;
+
 }
 
 var cssTask = function (options) {
@@ -145,7 +147,7 @@ var cssTask = function (options) {
       run();
       gulp.watch(options.src, run);
     } else {
-      gulp.src(options.src)
+      return gulp.src(options.src)
         .pipe(concat('main.less'))
         .pipe(less())
         .pipe(cssnano())
@@ -180,25 +182,28 @@ gulp.task('default', function () {
 
 gulp.task('deploy', function () {
 
-  browserifyTask({
+  var js = browserifyTask({
     development: false,
     src: './app/main.jsx',
     dest: './dist'
   });
 
-  cssTask({
+  var css = cssTask({
     development: false,
     src: './styles/**/*.less',
     dest: './dist'
   });
 
-  gulp.src('dist/**')
-    .pipe(rsync({
-      root: 'dist',
-      hostname: 'ash-alpha.ironfroggy.com',
-      destination: '/var/www/reactivenotes.ironfroggy.com/',
-      recursive: true,
-    }));
+  Promise.all([js, css]).then(()=>{
+    console.log('Uploading...')
+    gulp.src('dist/**')
+      .pipe(rsync({
+        root: 'dist',
+        hostname: 'ash-alpha.ironfroggy.com',
+        destination: '/var/www/reactivenotes.ironfroggy.com/',
+        recursive: true,
+      }))
+  });
 
 });
 

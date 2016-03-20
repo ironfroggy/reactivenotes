@@ -90,7 +90,9 @@ export class NoteEntry extends AutoComponent {
     let shift = ev.shiftKey
     switch (ev.keyCode) {
       case 13:
-        this.onEnter(ev.target.value)
+        if (!ev.shiftKey) {
+          this.onEnter(ev.target.value)
+        }
         break
       case 38:
         if (shift) {
