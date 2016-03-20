@@ -1,5 +1,40 @@
+@import './mixins.less';
+@import './variables.less';
+
 body {
   background-color: #fcfcfc;
+  height: 100vh;
+  margin: 0;
+
+  main {
+    height: 100%;
+  }
+}
+
+.note-app {
+  .flowDown();
+  height: 100%;
+  padding: 10px;
+  box-sizing: padding-box;
+  align-items: center;
+
+  .note-placeholder {
+    opacity: 0.5;
+  }
+
+  & > * {
+    width: @appWidth;
+  }
+
+  .note-list {
+    flex-basis: 16.666% * 5;
+    flex-shrink: 1;
+  }
+
+  .note-entry {
+    flex-basis: 16.666%;
+    flex-shrink: 1;
+  }
 }
 
 textarea, .note {
@@ -24,7 +59,10 @@ textarea, .note {
 .note-list {
   box-shadow: 0 0 5px #aaa;
   position: relative;
-  max-width: 400px;
+  max-width: @appWidth;
+  flex-grow: 1;
+
+  .flowDown();
 }
 
 .note-filter {
@@ -40,12 +78,22 @@ textarea, .note {
 
 .note {
   background-color: lightyellow;
-  min-height: 4ex;
+  height: 20%;
+  position: relative;
+
+  .note-text {
+
+  }
 
   .tag {
-    color: grey;
-    float: right;
+    color: darken(@colorTag, 20%);
+  }
+  & > .tag {
+    color: @colorTag;
     font-size: smaller;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
   }
 
   &:not(:last-child) {
@@ -58,21 +106,23 @@ textarea, .note {
   }
 }
 
-.new-note-entry::before {
-  content: "> ";
-  flex-basis: 20px;
-  text-align: center;
-  line-height: 200%;
-}
 .new-note-entry {
   display: flex;
   flex-flow: row nowrap;
 
-  max-width: 400px;
-
-  background-color: transparent;
+  max-width: @appWidth;
   box-sizing: border-box;
   box-shadow: 0 0 1px #888 inset;
+
+  background-color: transparent;
+  .pop();
+
+  &::before {
+    content: "> ";
+    flex-basis: 20px;
+    text-align: center;
+    line-height: 200%;
+  }
 
   textarea {
     box-shadow: none;

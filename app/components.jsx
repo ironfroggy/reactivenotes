@@ -19,8 +19,15 @@ export class Note extends AutoComponent {
         <div className="note note-edit"><NoteEntry text={this.props.text} onEnter={this.onEnter} />{tags}</div>
       )
     } else {
+      let text = this.props.text.split(/(#\w+)/).map((s)=>{
+        if (s.match(/#\w+/)) {
+          return <span className="tag">{s}</span>
+        } else {
+          return <span>{s}</span>
+        }
+      })
       return (
-        <div className="note" onClick={this.onClick}>{this.props.text}{tags}</div>
+        <div className="note" onClick={this.onClick}><span className="note-text">{text}</span>{tags}</div>
       )
     }
   }

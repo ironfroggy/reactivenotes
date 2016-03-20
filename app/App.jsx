@@ -21,6 +21,9 @@ class App extends AutoComponent {
     var notes = NoteStore.notes.map(
       (note, i) => <Note key={i} i={i} text={note.text} tags={note.tags || []} editMode={editNote===i} />
     )
+    while (notes.length < 5) {
+      notes.splice(0, 0, <div className="note note-placeholder"></div>)
+    }
     var focusEntry = editNote === -1
     var filter = NoteStore.tag ? `Filtering by ${NoteStore.tag}` : "All notes. Enter a #hashtag to filter."
     return (
