@@ -73,7 +73,9 @@ class PouchNoteStore extends EventEmitter {
     }
     while (result = hashtag_re.exec(text)) {
       [tag, index, input] = result
-      note.tags.push(tag)
+      if (!note.tags.includes(tag)) {
+        note.tags.push(tag)
+      }
     }
   }
   movePage(n=1) {

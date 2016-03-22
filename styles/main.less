@@ -98,15 +98,16 @@ textarea, .note {
 
   }
 
-  .tag {
-    color: darken(@colorTag, 20%);
-  }
-  & > .tag {
+  .note-tags {
     color: @colorTag;
     font-size: smaller;
     position: absolute;
     right: 5px;
     bottom: 5px;
+  }
+
+  .tag {
+    color: darken(@colorTag, 20%);
   }
 
   &:not(:last-child) {

@@ -4,6 +4,8 @@ import AutoComponent from './utils.jsx'
 import Actions from './actions.jsx'
 import Dispatcher from './dispatcher.jsx'
 
+import Tag from './components/tags.jsx'
+
 
 export class Note extends AutoComponent {
   constructor(props={editMode: false}) {
@@ -12,7 +14,7 @@ export class Note extends AutoComponent {
   render() {
     let tags = []
     for (let tag of this.props.tags) {
-      tags.push(<span key={this.props.key+"_tag_"+tag} className="tag">{tag}</span>)
+      tags.push(<Tag key={tags.length} tag={tag} />)
     }
     if (this.props.editMode) {
       return (
@@ -27,7 +29,10 @@ export class Note extends AutoComponent {
         }
       })
       return (
-        <div className="note" onClick={this.onClick}><span className="note-text">{text}</span>{tags}</div>
+        <div className="note" onClick={this.onClick}>
+          <span className="note-text">{text}</span>
+          <span className="note-tags">{tags}</span>
+        </div>
       )
     }
   }
@@ -83,6 +88,9 @@ export class NoteEntry extends AutoComponent {
   onKeyDown(ev) {
     switch (ev.keyCode) {
       case 13:
+        if (!ev.shiftKey) {
+          ev.preventDefault()
+        }
         break
     }
   }
