@@ -126,5 +126,5 @@ class PouchNoteStore extends EventEmitter {
   }
 }
 
-
+export {PouchNoteStore as NoteStore}
 export default new PouchNoteStore()
