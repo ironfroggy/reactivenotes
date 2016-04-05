@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import Moment from 'moment';
 
-import PouchDB from 'pouchdb';
+import PlasmidDB from 'PlasmidDB';
 
 import Dispatcher from './dispatcher.jsx';
 
@@ -14,35 +14,25 @@ class PouchNoteStore extends EventEmitter {
     this.tag = null
     this.page = 1
     this._setupDB()
-    this._fetchNotes()
 
     window.note_store = this
   }
   _setupDB() {
-    this.db = new PouchDB("notes")
-    let ddoc = {
-      _id: "_design/indexes",
-      views: {
-        by_tag: {
-          map: function(doc) {
-            if (doc.tags) {
-              for (let tag of doc.tags) {
-                emit(tag);
-              }
+    this.db = new PlasmidDB.Database({
+      name: 'notes',
+      schema: {
+        version: 2,
+        stores: {
+          notes: {
+            sync: false,
+            indexes: {
+              tagged: {key: "tags", unique: false, multi: true},
             }
-          }.toString()
-        }
+          },
+        },
       }
-    }
-    this.db.get(ddoc._id)
-      .then((res)=>{
-        ddoc._rev = res._rev
-        this.db.put(ddoc)
-      })
-      .catch(()=>{
-        this.db.put(ddoc)
-      })
-    ;
+    });
+    this.db.on('opensuccess', ()=>this._fetchNotes())
   }
   onAction(payload) {
     switch (payload.action) {
@@ -89,26 +79,25 @@ class PouchNoteStore extends EventEmitter {
       note.tags = [this.tag]
     }
     this._prepareNote(note)
-    this.db.put(note).then((result)=>{
+    console.log(this.db.stores);
+    this.db.stores.notes.add(note).then((result)=>{
       this._fetchNotes()
     })
   }
   editNote(i, text) {
     let note = Object.assign(this.notes[i], {text: text})
     this._prepareNote(note)
-    this.db.put(note).then((result)=>{
+    this.db.stores.notes.put(note).then((result)=>{
       this._fetchNotes()
-    }).catch((error)=>{
+    }, (error)=>{
       console.error(error)
     })
   }
   deleteNote(i) {
-    console.log("delete", this.notes[i]._id)
-    this.db.remove(this.notes[i])
+    this.db.stores.notes.remove(this.notes[i])
       .then(()=>{
         this._fetchNotes()
-      })
-      .catch((error)=>{
+      }, (error)=>{
         console.error(`delete error (${this.notes[i]._id}):`, error);
       })
   }
@@ -117,26 +106,22 @@ class PouchNoteStore extends EventEmitter {
       let q
       let limit = 5
       let opt = {
-        include_docs: true,
-        endkey: "0000-12-28T09:15:42-05:00",
-        startkey: "9999-12-28T09:15:42-05:00",
-        limit: limit,
-        skip: (this.page - 1) * limit,
-        descending: true,
+        start: (this.page - 1) * limit,
+        stop: (this.page - 1) * limit + limit,
       }
-      console.log('fetch', this.tag)
-      console.trace()
+      console.log('fetch...', this.tag)
       if (this.tag === null) {
-        q = this.db.allDocs(opt)
+        q = this.db.stores.notes.fetch(opt)
       } else {
-        opt.key = this.tag
-        q = this.db.query("indexes/by_tag", opt)
+        opt.eq = this.tag
+        q = this.db.stores.notes.by('tagged').fetch(opt)
       }
       q.then((results)=>{
-        this.notes = results.rows.map((row)=>row.doc).reverse()
+        this.notes = results.reverse()
+        this.notes.forEach((note)=>console.log(note))
         this.emit('change')
         resolve(this.notes)
-      }).catch((error)=>console.error)
+      }, (error)=>console.error)
     })
   }
 }

@@ -4,6 +4,10 @@
   "description": "Note taking app",
   "author": "Calvin Spealman",
   "license": "MIT",
+  "scripts": {
+    "test": "node_modules/.bin/gulp test",
+    "build": "node_modules/.bin/gulp build"
+  },
   "devDependencies": {
     "babel-plugin-syntax-jsx": "^6.1.18",
     "babel-plugin-transform-react-jsx": "^6.1.18",
@@ -27,13 +31,26 @@
     "gulp-uglify": "^1.5.1",
     "gulp-util": "^3.0.0",
     "gulp-webserver": "^0.9.1",
+    "jasmine": "^2.4.1",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.21",
+    "karma-babel-preprocessor": "^6.0.1",
+    "karma-browserify": "^5.0.3",
+    "karma-chrome-launcher": "^0.2.3",
+    "karma-detect-browsers": "^2.0.2",
+    "karma-jasmine": "^0.3.8",
+    "karma-safari-launcher": "^0.1.1",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-spec-reporter": "0.0.25",
     "moment": "^2.10.6",
     "ms": "^0.7.1",
+    "node-jsdom": "^3.1.5",
     "phantomjs": "^1.9.12",
     "pouchdb": "^5.1.0",
     "reactify": "^0.15.2",
     "vinyl-source-stream": "^0.1.1",
-    "watchify": "^2.1.1"
+    "watchify": "^3.7.0",
+    "yargs": "^4.4.0"
   },
   "dependencies": {
     "react": "^0.14.2",
