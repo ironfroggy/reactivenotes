@@ -6,7 +6,9 @@
   "license": "MIT",
   "scripts": {
     "test": "node_modules/.bin/gulp test",
-    "build": "node_modules/.bin/gulp build"
+    "build": "node_modules/.bin/gulp build",
+    "deploy": "node_modules/.bin/gulp deploy",
+    "run": "node_modules/.bin/gulp"
   },
   "devDependencies": {
     "babel-plugin-syntax-jsx": "^6.1.18",

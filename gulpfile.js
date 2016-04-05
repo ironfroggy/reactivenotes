@@ -201,7 +201,10 @@ function rebuild(options) {
 
 // Starts our development workflow
 gulp.task('default', function () {
-  rebuild({development: true});
+  rebuild({
+    development: true,
+    watch: true,
+  });
 
   gulp.src('./build/')
     .pipe(webserver({
