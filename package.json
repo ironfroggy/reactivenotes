@@ -13,7 +13,7 @@
   "devDependencies": {
     "moment": "^2.12.0",
     "plasmiddb": "^1.1.0",
-    "reactive-gulp-tasks": "^1.2.0"
+    "reactive-gulp-tasks": "^1.2.1"
   },
   "browserify": {
     "transform": [
