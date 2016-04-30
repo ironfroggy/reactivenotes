@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 import Moment from 'moment';
+import uuid from 'uuid';
 
 import PlasmidDB from 'PlasmidDB';
 
@@ -26,13 +27,24 @@ class PouchNoteStore extends EventEmitter {
           notes: {
             sync: false,
             indexes: {
-              tagged: {key: "tags", unique: false, multi: true},
+              tags: {key: "tags", multi: true},
             }
           },
         },
       }
     });
-    this.db.on('opensuccess', ()=>this._fetchNotes())
+    this.db.on('opensuccess', ()=>{
+      this._fetchNotes()
+      this.emit('ready')
+      this.isReady = true
+    })
+  }
+  whenReady(cb) {
+    if (this.isReady) {
+      cb.call(this)
+    } else {
+      this.on('ready', cb)
+    }
   }
   onAction(payload) {
     switch (payload.action) {
@@ -73,16 +85,18 @@ class PouchNoteStore extends EventEmitter {
     this._fetchNotes()
   }
   addNote(text) {
-    let ts = Moment().format()
+    let ts = Moment().format() + ':' + uuid.v4()
     let note = {text: text, _id: ts}
     if (this.tag) {
       note.tags = [this.tag]
     }
     this._prepareNote(note)
     console.log(this.db.stores);
-    this.db.stores.notes.add(note).then((result)=>{
-      this._fetchNotes()
-    })
+    return new Promise((resolve) => {
+      this.db.stores.notes.add(note).then((result)=>{
+        this._fetchNotes().then(resolve)
+      })
+    });
   }
   editNote(i, text) {
     let note = Object.assign(this.notes[i], {text: text})
@@ -111,10 +125,15 @@ class PouchNoteStore extends EventEmitter {
       }
       console.log('fetch...', this.tag)
       if (this.tag === null) {
+        console.log('direct, no index')
         q = this.db.stores.notes.fetch(opt)
       } else {
         opt.eq = this.tag
-        q = this.db.stores.notes.by('tagged').fetch(opt)
+        console.log(opt)
+        var index = this.db.stores.notes.by('tags');
+        console.log(index)
+        q = index.fetch(opt)
+        console.log(q)
       }
       q.then((results)=>{
         this.notes = results.reverse()
