@@ -12,7 +12,7 @@ class PouchNoteStore extends EventEmitter {
     super()
     Dispatcher.register(this.onAction.bind(this));
     this.notes = []
-    this.tag = null
+    this.filter = {}
     this.page = 1
     this._setupDB()
 
@@ -22,12 +22,13 @@ class PouchNoteStore extends EventEmitter {
     this.db = new PlasmidDB.Database({
       name: 'notes',
       schema: {
-        version: 2,
+        version: 3,
         stores: {
           notes: {
             sync: false,
             indexes: {
               tags: {key: "tags", multi: true},
+              properties: {key: "property_keys", multi: true},
             }
           },
         },
@@ -49,7 +50,7 @@ class PouchNoteStore extends EventEmitter {
   onAction(payload) {
     switch (payload.action) {
       case "set_filter":
-        this.tag = payload.tag
+        this.filter = payload.filter
         this._fetchNotes()
         break
       case "new_entry":
@@ -68,8 +69,9 @@ class PouchNoteStore extends EventEmitter {
   _prepareNote(note) {
     let text = note.text
     let hashtag_re = /#\w+/gi
+    let property_re = /^(\w+): ?(.*)$/gmi
     let result = null
-    let tag, index, input
+    let tag, index, input, prop, propkey, propval
     if (typeof note.tags === "undefined") {
       note.tags = []
     }
@@ -77,6 +79,23 @@ class PouchNoteStore extends EventEmitter {
       [tag, index, input] = result
       if (!note.tags.includes(tag)) {
         note.tags.push(tag)
+      }
+    }
+    if (typeof note.properties === "undefined") {
+      note.properties = []
+    }
+    if (typeof note.property_keys === "undefined") {
+      note.property_keys = []
+    }
+    while (result = property_re.exec(text)) {
+      [prop, propkey, propval] = result
+      note.properties.push({
+        key: propkey,
+        value: propval,
+      })
+      note.properties[propkey] = propval
+      if (!note.property_keys.includes(propkey)) {
+        note.property_keys.push(propkey)
       }
     }
   }
@@ -87,11 +106,10 @@ class PouchNoteStore extends EventEmitter {
   addNote(text) {
     let ts = Moment().format() + ':' + uuid.v4()
     let note = {text: text, _id: ts}
-    if (this.tag) {
-      note.tags = [this.tag]
+    if (this.filter.tag) {
+      note.tags = [this.filter.tag]
     }
     this._prepareNote(note)
-    console.log(this.db.stores);
     return new Promise((resolve) => {
       this.db.stores.notes.add(note).then((result)=>{
         this._fetchNotes().then(resolve)
@@ -123,17 +141,17 @@ class PouchNoteStore extends EventEmitter {
         start: (this.page - 1) * limit,
         stop: (this.page - 1) * limit + limit,
       }
-      console.log('fetch...', this.tag)
-      if (this.tag === null) {
-        console.log('direct, no index')
-        q = this.db.stores.notes.fetch(opt)
-      } else {
-        opt.eq = this.tag
-        console.log(opt)
+      console.log('fetch...', this.filter)
+      if (this.filter.tag) {
+        opt.eq = this.filter.tag
         var index = this.db.stores.notes.by('tags');
-        console.log(index)
         q = index.fetch(opt)
-        console.log(q)
+      } else if (this.filter.property) {
+        opt.eq = this.filter.property
+        var index = this.db.stores.notes.by('properties');
+        q = index.fetch(opt)
+      } else {
+        q = this.db.stores.notes.fetch(opt)
       }
       q.then((results)=>{
         this.notes = results.reverse()

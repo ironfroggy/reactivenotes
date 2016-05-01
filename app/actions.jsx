@@ -2,10 +2,10 @@ import Dispatcher from './dispatcher.jsx';
 
 
 class Actions {
-    setFilter(tag) {
+    setFilter(filter) {
         Dispatcher.dispatch({
             action: "set_filter",
-            tag: tag || null,
+            filter: filter,
         })
     }
     newEntry(text) {

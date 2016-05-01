@@ -122,7 +122,9 @@ export class NoteEntry extends AutoComponent {
     text = text.trim()
     if (typeof this.props.onEnter === "undefined") {
       if (text.match(/^#\w+$/) !== null || text === "") {
-        Actions.setFilter(text)
+        Actions.setFilter({tag: text})
+      } else if (text.match(/^(\w+):$/) !== null || text === "") {
+        Actions.setFilter({property: text.match(/^(\w+):$/)[1]})
       } else {
         Actions.newEntry(text)
       }
