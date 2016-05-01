@@ -28,7 +28,7 @@ export default function plugin(property, component) {
 class Todo extends AutoComponent {
   render() {
     let attrs = {}
-    if (this.props.property == "todo") {
+    if (this.props.property == "done") {
       attrs["checked"] = "checked"
     }
     return (

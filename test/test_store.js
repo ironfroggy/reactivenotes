@@ -23,8 +23,8 @@ describe('NoteStore', function () {
   it('notes begin empty', function() {
     expect(this.store.notes).toEqual([])
   });
-  it('tag begin null', function() {
-    expect(this.store.tag).toBe(null)
+  it('filter begins empty', function() {
+    expect(this.store.filter).toEqual({})
   });
   it('page begins 1', function() {
     expect(this.store.page).toEqual(1)
@@ -38,7 +38,7 @@ describe('NoteStore', function () {
   });
   it('fetches correctly tagged notes', function(done) {
     this.store.addNote("note text #foo").then(()=>{
-      this.store.tag = '#foo'
+      this.store.filter = {tag: '#foo'}
       this.store._fetchNotes().then(()=>{
         expect(this.store.notes.length).toEqual(1);
         expect(this.store.notes[0].text).toEqual("note text #foo");
@@ -48,7 +48,7 @@ describe('NoteStore', function () {
   });
   it('excludes incorrectly tagged notes', function(done) {
     this.store.addNote("note text #foo").then(()=>{
-      this.store.tag = '#bar'
+      this.store.filter = {tag: '#bar'}
       this.store._fetchNotes().then(()=>{
         expect(this.store.notes.length).toEqual(0);
         done();

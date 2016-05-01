@@ -13,7 +13,13 @@
   "devDependencies": {
     "moment": "^2.12.0",
     "plasmiddb": "^1.1.0",
-    "reactive-gulp-tasks": "^1.2.1"
+    "reactive-gulp-tasks": "^1.2.1",
+
+    "gulp-uglify": "^1.5.3"
+  },
+  "deploy": {
+    "hostname": "ash-alpha.ironfroggy.com",
+    "destination": "/var/www/reactivenotes.ironfroggy.com"
   },
   "browserify": {
     "transform": [
