@@ -7,7 +7,7 @@ import PlasmidDB from 'PlasmidDB';
 import Dispatcher from './dispatcher.jsx';
 
 
-class PouchNoteStore extends EventEmitter {
+class NoteStore extends EventEmitter {
   constructor() {
     super()
     Dispatcher.register(this.onAction.bind(this));
@@ -69,9 +69,9 @@ class PouchNoteStore extends EventEmitter {
   _prepareNote(note) {
     let text = note.text
     let hashtag_re = /#\w+/gi
-    let property_re = /^(\w+): ?(.*)$/gmi
+    let property_re = /(^|\n)(\w+): ?(.*)$/gi
     let result = null
-    let tag, index, input, prop, propkey, propval
+    let tag, index, input, prop, propkey, propval, _
     if (typeof note.tags === "undefined") {
       note.tags = []
     }
@@ -88,7 +88,8 @@ class PouchNoteStore extends EventEmitter {
       note.property_keys = []
     }
     while (result = property_re.exec(text)) {
-      [prop, propkey, propval] = result
+      [prop, _, propkey, propval] = result
+      //text = text.slice(0, text.length - prop.length)
       note.properties.push({
         key: propkey,
         value: propval,
@@ -98,6 +99,7 @@ class PouchNoteStore extends EventEmitter {
         note.property_keys.push(propkey)
       }
     }
+    note.text = text
   }
   movePage(n=1) {
     this.page += n
@@ -163,5 +165,5 @@ class PouchNoteStore extends EventEmitter {
   }
 }
 
-export {PouchNoteStore as NoteStore}
-export default new PouchNoteStore()
+export {NoteStore}
+export default new NoteStore()

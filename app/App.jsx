@@ -19,7 +19,7 @@ class App extends AutoComponent {
   render() {
     var editNote = this.state.editNote
     var notes = NoteStore.notes.map(
-      (note, i) => <Note key={i} i={i} text={note.text} tags={note.tags || []} editMode={editNote===i} />
+      (note, i) => <Note key={i} i={i} note={note} text={note.text} tags={note.tags || []} editMode={editNote===i} />
     )
     while (notes.length < 5) {
       notes.splice(0, 0, <div className="note note-placeholder"></div>)

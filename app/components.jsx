@@ -5,6 +5,7 @@ import Actions from './actions.jsx'
 import Dispatcher from './dispatcher.jsx'
 
 import Tag from './components/tags.jsx'
+import plugin from './plugins.jsx'
 
 
 export class Note extends AutoComponent {
@@ -28,9 +29,15 @@ export class Note extends AutoComponent {
           return <span>{s}</span>
         }
       })
+      let plugin_ui = []
+      this.props.note.properties.forEach((prop)=>{
+        let ui = plugin(prop.key, {note: this.props.note, key: prop.key, value: prop.value})
+        plugin_ui.push(ui)
+      })
       return (
-        <div className="note" onClick={this.onClick}>
-          <span className="note-text">{text}</span>
+        <div className="note">
+          <span className="note-text" onClick={this.onClick}>{text}</span>
+          {plugin_ui}
           <span className="note-tags">{tags}</span>
         </div>
       )
