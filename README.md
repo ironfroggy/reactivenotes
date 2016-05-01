@@ -7,6 +7,12 @@
 
 ### Changes
 
+**0.3.2**
+
+* Add flags for starring items
+* Fix sorting
+* Fix deploy
+
 **0.3.0**
 
 * Added todo lists and generic meta-data
