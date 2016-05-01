@@ -195,6 +195,7 @@ class NoteStore extends EventEmitter {
       let opt = {
         start: (this.page - 1) * limit,
         stop: (this.page - 1) * limit + limit,
+        reverse: true,
       }
       if (this.filter.tag) {
         opt.eq = this.filter.tag
@@ -208,7 +209,7 @@ class NoteStore extends EventEmitter {
         q = this.db.stores.notes.fetch(opt)
       }
       q.then((results)=>{
-        this.notes = results.reverse().map((note)=>new Note(note))
+        this.notes = results.map((note)=>new Note(note))
         this.emit('change')
         resolve(this.notes)
       }, (error)=>console.error)

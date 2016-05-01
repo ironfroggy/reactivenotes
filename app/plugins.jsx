@@ -49,3 +49,16 @@ class Todo extends AutoComponent {
 
 plugin('todo', Todo)
 plugin('done', Todo)
+
+class Flag extends AutoComponent {
+  render() {
+    let flags = {
+      "star": 9733,
+      "whitestar": 9734,
+    }
+    return (
+      <span>{String.fromCharCode(flags[this.props.value] || this.props.value)}</span>
+    )
+  }
+}
+plugin('flag', Flag)
