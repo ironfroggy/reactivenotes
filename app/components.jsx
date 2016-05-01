@@ -30,8 +30,8 @@ export class Note extends AutoComponent {
         }
       })
       let plugin_ui = []
-      this.props.note.properties.forEach((prop)=>{
-        let ui = plugin(prop.key, {note: this.props.note, key: prop.key, value: prop.value})
+      this.props.note.properties.forEach((prop, i)=>{
+        let ui = plugin(prop.key, {note: this.props.note, noteindex: this.props.i, index: i, key: prop.key, value: prop.value})
         plugin_ui.push(ui)
       })
       return (

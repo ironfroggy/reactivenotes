@@ -60,6 +60,14 @@ class Actions {
             })
         }
     }
+    updateNoteProperty(noteindex, propindex, property) {
+        Dispatcher.dispatch({
+            action: "change_property",
+            note: noteindex,
+            propindex: propindex,
+            property: property,
+        })
+    }
     movePage(n) {
         this.disableEditMode()
         Dispatcher.dispatch({

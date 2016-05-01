@@ -7,6 +7,11 @@
 
 ### Changes
 
+**0.3.0**
+
+* Added todo lists and generic meta-data
+* Added meta-data triggered display plugins
+
 **0.1.1**
 
 * Updating some nested dependencies and removing a stale dep we do not use
