@@ -13,7 +13,7 @@
     "browserify": "^10.2.1",
     "connect": "^3.4.0",
     "flux": "^2.1.1",
-    "glob": "^4.0.6",
+    "glob": "^7.0.4",
     "gulp": "^3.8.9",
     "gulp-concat": "^2.3.4",
     "gulp-cssnano": "^2.1.0",
