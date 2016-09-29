@@ -12,7 +12,7 @@
     "babelify": "^7.2.0",
     "browserify": "^10.2.1",
     "connect": "^3.4.0",
-    "flux": "^2.1.1",
+    "flux": "^3.0.0",
     "glob": "^4.0.6",
     "gulp": "^3.8.9",
     "gulp-concat": "^2.3.4",
