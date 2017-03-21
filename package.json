@@ -26,7 +26,7 @@
     "gulp-uglify": "^1.5.1",
     "gulp-util": "^3.0.0",
     "gulp-webserver": "^0.9.1",
-    "moment": "^2.10.6",
+    "moment": "^2.18.1",
     "ms": "^0.7.1",
     "phantomjs": "^1.9.12",
     "pouchdb": "^5.1.0",
