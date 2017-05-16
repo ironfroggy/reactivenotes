@@ -27,7 +27,7 @@
     "gulp-util": "^3.0.0",
     "gulp-webserver": "^0.9.1",
     "moment": "^2.10.6",
-    "ms": "^0.7.1",
+    "ms": "^2.0.0",
     "phantomjs": "^1.9.12",
     "pouchdb": "^5.1.0",
     "reactify": "^0.15.2",
